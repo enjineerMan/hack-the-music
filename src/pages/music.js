@@ -18,11 +18,11 @@ class MusicPage extends Component {
         const tempo = await getMidiTempo(formData);
         console.log(response);
         console.log(tempo);
-        this.setState({ data: response.melody_result, tempo: tempo.auftakt_result });
+        this.setState({ melody: response.melody_result, tempo: tempo.auftakt_result });
     }
 
     render() {
-      const { data,tempo } = this.state;
+      const { melody,tempo } = this.state;
         //console.log(midi_notes);
         return (
           <div>
@@ -31,7 +31,7 @@ class MusicPage extends Component {
               <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />
             </div>
             <button className="button" onClick={() => this.getMidi()}> Upload </button>
-            {data && <p> Key: {data.key}, Tuning Frequency: {data.tuning_frequency}</p>}
+            {melody && <p> Key: {melody.key}, Tuning Frequency: {melody.tuning_frequency}</p>}
             {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
           </div>
         );
