@@ -48,7 +48,7 @@ class MusicPage extends Component {
         const beats_per_bar = tempo["clicks_per_bar"]/2;
         var key_sig = this.state.melody["key"];
         //console.log(key_sig);
-        if(key_sig.length==6){
+        if(key_sig.length==6){ //get rid of space in key signature
           key_sig = key_sig[0]+key_sig.substring(3);
         }else if(key_sig==7){
           key_sig = key_sig.substring(0,2)+key_sig.substring(4);
@@ -70,7 +70,7 @@ class MusicPage extends Component {
           var rest_type = 1 - note_type;
           var octv = note_value[note_value.length-1];
           var note_to_add = key_sig.length==6?note_value.substring(0,1) : note_value.substring(0,2);
-          if (octv==3){
+          if (octv==3){ //change note appropriately by octave
             note_to_add+=",";
           }else if(octv==4){
             //do nothing
@@ -82,16 +82,15 @@ class MusicPage extends Component {
 
           if(Math.abs(note_duration/beat_duration - 1) < Math.abs(note_duration/beat_duration - 0.75)){ //quarter
             note_type = 1;
-            note_to_add += "4";
+            note_to_add += "2"; // base duration is an eighth note. We can add a multiplier after the note, i.e., C2 -> quarter note.
           }else if(Math.abs(note_duration/beat_duration - 0.75) < Math.abs(note_duration/beat_duration - 0.5)){ // doted eighth
             note_type = 0.75;
-            note_to_add += "3";
+            note_to_add += "1.5";
           }else if(Math.abs(note_duration/beat_duration - 0.5) < Math.abs(note_duration/beat_duration - 0.25)){ //eigth
-            note_type = 0.5;
-            note_to_add += "2";
+            note_type = 0.5;;
           }else if(Math.abs(note_duration/beat_duration - 0.25) < Math.abs(note_duration/beat_duration)){ //sixteenth
             note_type = 0.25;
-            note_to_add += "1";
+            note_to_add += "/2";
           }else{
             note_type = 0;
           }
