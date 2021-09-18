@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getMidi} from '../api';
+import {getMidiTempo} from '../api';
 
 class MusicPage extends Component {
     state = {
@@ -14,12 +15,15 @@ class MusicPage extends Component {
         formData.append('access_id', process.env.REACT_APP_SONIC_API);
         formData.append('format', 'json');
         const response = await getMidi(formData);
+        const tempo = await getMidiTempo(formData);
         console.log(response);
-        this.setState({ data: response.melody_result });
+        console.log(tempo);
+        this.setState({ data: response.melody_result, tempo: tempo.auftakt_result });
     }
 
     render() {
       const { data } = this.state;
+      const { tempo } = this.state;
         //console.log(midi_notes);
         return (
           <div>
@@ -29,6 +33,7 @@ class MusicPage extends Component {
             </div>
             <button className="button" onClick={() => this.getMidi()}> Upload </button>
             {data && <p> Key: {data.key}, Tuning Frequency: {data.tuning_frequency}</p>}
+            {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
           </div>
         );
     }
@@ -56,5 +61,5 @@ function midi_to_note(noteNum){
    octv = Math.floor(noteNum / 12) - 1;
    nt = notes.substring((noteNum % 12) * 2, (noteNum % 12) * 2 + 2);
    return nt.toString()+octv.toString();
-}   
+}
 export default MusicPage;
