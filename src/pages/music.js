@@ -22,8 +22,7 @@ class MusicPage extends Component {
     }
 
     render() {
-      const { data } = this.state;
-      const { tempo } = this.state;
+      const { data,tempo } = this.state;
         //console.log(midi_notes);
         return (
           <div>
