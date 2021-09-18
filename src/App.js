@@ -1,6 +1,7 @@
 import './App.css';
 import MusicPage from './pages/music.js';
 
+// some code that uses the library
 function App() {
   return (
     <div className="App">

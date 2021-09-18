@@ -8,6 +8,7 @@ class MusicPage extends Component {
     }
 
     async getMidi() {
+      console.log("processing...");
         const formData = new FormData();
         formData.append('input_file', this.state.file);
         formData.append('access_id', process.env.REACT_APP_SONIC_API);
@@ -18,7 +19,8 @@ class MusicPage extends Component {
     }
 
     render() {
-        const { data } = this.state;
+      const { data } = this.state;
+        //console.log(midi_notes);
         return (
           <div>
             <span>Upload Music File</span>
@@ -27,14 +29,32 @@ class MusicPage extends Component {
             </div>
             <button className="button" onClick={() => this.getMidi()}> Upload </button>
             {data && <p> Key: {data.key}, Tuning Frequency: {data.tuning_frequency}</p>}
-            {data ? data.notes.map(n =>
-                <div key={n.volume}>
-                    <p>Midi Pitch: {n.midi_pitch}</p>
-                    <p>Duration: {n.duration}</p>
-                </div>
-            ) : ''}
           </div>
         );
+    }
+
+    componentDidUpdate(){
+      const data = this.state.data["notes"];
+      var midi_notes = [];
+      //console.log("does it get here")
+      console.log(data);
+      if(data){
+        for(var i = 0; i<data.length; i++){
+          midi_notes.push(midi_to_note(Math.round(data[i]["midi_pitch"])));
+          console.log(Math.round(data[i]["midi_pitch"]));
+        }
+        console.log(midi_notes);
       }
+      
+    }
+
 }
+function midi_to_note(noteNum){
+  var notes = "C C#D D#E F F#G G#A A#B ";
+   var octv;
+   var nt;
+   octv = Math.floor(noteNum / 12) - 1;
+   nt = notes.substring((noteNum % 12) * 2, (noteNum % 12) * 2 + 2);
+   return nt.toString()+octv.toString();
+}   
 export default MusicPage;
