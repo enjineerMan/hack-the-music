@@ -46,13 +46,13 @@ class MusicPage extends Component {
         time_sig = tempo["clicks_per_bar"]/2+"/4";
       else time_sig = time_sig+"/8";
       var key_sig = this.state.melody["key"];
+      if(key_sig.length==6){
+        key_sig = key_sig[0].toUpperCase()+key_sig.substring(3);
+      }else if(key_sig==7){
+        key_sig = key_sig.substring(0,2).toUpperCase()+key_sig.substring(4);
+      }
       var abc_string = `X: 1\nT: your sheet\nM: ${time_sig}\nK: ${key_sig}\n|`;
       //console.log(key_sig);
-      if(key_sig.length==6){
-        key_sig = key_sig[0]+key_sig.substring(3);
-      }else if(key_sig==7){
-        key_sig = key_sig.substring(0,2)+key_sig.substring(4);
-      }
       console.log(key_sig);
       var count = 0;
       var b_count = 0;
@@ -99,11 +99,10 @@ class MusicPage extends Component {
         }else{
           note_type = 0;
         }
-
-        var rest_type = 1 - note_type;
-        // notes.push({"note": note_value, "note_type": note_type, "rest_type": rest_type});
+        notes.push({"note": note_value, "note_type": note_type});
       }
       console.log(abc_string);
+      console.log(notes);
       this.setState({ notes: abc_string });
     }
   }
@@ -144,17 +143,17 @@ function midi_to_note(noteNum){
    var nt;
    octv = Math.floor(noteNum / 12) - 1;
    nt = notes.substring((noteNum % 12) * 2, (noteNum % 12) * 2 + 2);
-   nt = nt.toString()+octv.toString();
+   nt = nt.toString();
    var n = nt[0];
    if (nt[1] == '#'){
-     n+='^c';
+     n='^'+n;
    }
    if (octv==3){ //change note appropriately by octave
       n+=",";
     }else if(octv==5){
-      n += n.toLowerCase();
+      n = n.toLowerCase();
     }else if(octv==6){
-     n+=n.toLowerCase()+"\'";
+     n=n.toLowerCase()+"\'";
     }
    return n;
 }
