@@ -37,6 +37,10 @@ class App extends Component {
             : <button onClick={signInWithGoogle}>Sign in with Google</button>
           }
           </header>
+          <div className="footer">
+            <img src="http://www.sonicapi.com/download/logo_sonicAPI.png"/>
+            <a href="www.sonicAPI.com">With use of SonicAPI</a>
+          </div>
         </div>
       );
     }

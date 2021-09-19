@@ -29,6 +29,17 @@ h1{
   margin-top: 100px;
 }
 
+.footer{
+  font-size: 10px;
+
+  margin-bottom: 10px;
+}
+
+img{
+  width: 10px;
+  height: 10px;
+}
+
 .App-link {
   color: #61dafb;
 }
