@@ -57,7 +57,8 @@ class MusicPage extends Component {
       var count = 0;
       var b_count = 0;
       for(var i = 0; i<melody.length; i++){
-        if (count == 8){
+        console.log("count: "+count);
+        if (count >= 8){
           count = 0;
           abc_string+="|";
           b_count +=1;
