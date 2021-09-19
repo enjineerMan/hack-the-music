@@ -5,18 +5,18 @@ import firebase from 'firebase/compat/app';
 import { getAuth } from 'firebase/auth';
 import withFirebaseAuth from '../App.js';
 
-const auth = getAuth();
-const user = auth.currentUser;
-
 class MusicPage extends Component {
   state = {
     file: null,
     melody: '',
     tempo: '',
+    user: '',
   }
 
-  componentDidMount(){
-
+  componentDidMount() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    this.setState({ user });
   }
 
   async getMidi() {
@@ -33,7 +33,7 @@ class MusicPage extends Component {
   }
 
   render() {
-    const { melody,tempo } = this.state;
+    const { melody,tempo, user } = this.state;
     const firebaseApp = firebase.apps[0];
     console.log(user);
     return (
