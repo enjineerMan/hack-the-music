@@ -39,7 +39,7 @@ class App extends Component {
           </header>
           <div className="footer">
             <img src="http://www.sonicapi.com/download/logo_sonicAPI.png"/>
-            <a href="www.sonicAPI.com">With use of SonicAPI</a>
+            <a href="http://www.sonicAPI.com" target="_blank">With use of SonicAPI</a>
           </div>
         </div>
       );
