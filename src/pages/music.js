@@ -30,7 +30,7 @@ class MusicPage extends Component {
     render() {
       const { melody,tempo } = this.state;
       const firebaseApp = firebase.apps[0];
-        console.log(user);]
+        console.log(user);
       console.log(melody);
         return (
           <div>
