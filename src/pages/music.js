@@ -11,6 +11,7 @@ class MusicPage extends Component {
     melody: '',
     tempo: '',
     user: '',
+    notes: '',
   }
 
   componentDidMount() {
@@ -30,30 +31,10 @@ class MusicPage extends Component {
     console.log(response);
     console.log(tempo);
     this.setState({ melody: response.melody_result, tempo: tempo.auftakt_result });
+    this.abcNotation();
   }
 
-  render() {
-    const { melody,tempo, user } = this.state;
-    const firebaseApp = firebase.apps[0];
-    console.log(user);
-    return (
-      <div>
-        { user
-          ? <span>Hello, {user.displayName} </span>
-          : <span>Hello, Guest</span>
-        }
-        <span>Upload Music File</span>
-        <div className="panel-row">
-          <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />
-        </div>
-        <button className="button" onClick={() => this.getMidi()}> Upload </button>
-        {melody && <p> Key: {melody.key}, Tuning Frequency: {melody.tuning_frequency}</p>}
-        {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
-      </div>
-    );
-  }
-
-  componentDidUpdate(){
+  abcNotation() {
     const melody = this.state.melody["notes"];
     const tempo = this.state.tempo;
     var notes = []; // note objects in form {note name + octave: value, note type: value, rest type: value}
@@ -98,10 +79,30 @@ class MusicPage extends Component {
       console.log(notes);
       //console.log(midi_notes);
       //console.log(tempo["overall_tempo"]);
-      
+      this.setState({ notes });
 
     }
-    
+  }
+
+  render() {
+    const { melody,tempo, user } = this.state;
+    const firebaseApp = firebase.apps[0];
+    console.log(user);
+    return (
+      <div>
+        { user
+          ? <span>Hello, {user.displayName} </span>
+          : <span>Hello, Guest</span>
+        }
+        <span>Upload Music File</span>
+        <div className="panel-row">
+          <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />
+        </div>
+        <button className="button" onClick={() => this.getMidi()}> Upload </button>
+        {melody && <p> Key: {melody.key}, Tuning Frequency: {melody.tuning_frequency}</p>}
+        {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
+      </div>
+    );
   }
 
 }
