@@ -5,6 +5,7 @@ import MusicPage from './pages/music.js';
 import withFirebaseAuth from 'react-with-firebase-auth'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import firebaseConfig from './firebaseConfig';
 
 const app = firebase.initializeApp(firebaseConfig);

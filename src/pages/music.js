@@ -4,6 +4,7 @@ import Abcjs from "react-abcjs";
 import firebase from 'firebase/compat/app';
 import { getAuth } from 'firebase/auth';
 import withFirebaseAuth from '../App.js';
+import { getDatabase, ref, set } from "firebase/database";
 
 class MusicPage extends Component {
   state = {
@@ -20,6 +21,15 @@ class MusicPage extends Component {
     this.setState({ user });
   }
 
+    async writeData(uid, displayName, abcString)
+    {
+        const db = getDatabase();
+        set(ref(db, 'users/' + uid + Date.now()), {
+        username: displayName,
+        abcString: abcString
+      });
+    }
+
   async getMidi() {
     console.log("processing...");
     const formData = new FormData();
@@ -32,11 +42,14 @@ class MusicPage extends Component {
     console.log(tempo);
     this.setState({ melody: response.melody_result, tempo: tempo.auftakt_result });
     this.abcNotation();
+    if (this.state.user != null)
+        this.writeData(this.state.user.uid, this.state.user.displayName, this.state.notes);
   }
 
   abcNotation() {
     const melody = this.state.melody["notes"];
     const tempo = this.state.tempo;
+    const user = this.state.user;
     var notes = []; // note objects in form {note name + octave: value, note type: value, rest type: value}
     //console.log(melody);
     if(melody){
@@ -138,6 +151,7 @@ class MusicPage extends Component {
   }
 
 }
+
 function midi_to_note(noteNum){
   var notes = "C C#D D#E F F#G G#A A#B ";
    var octv;
@@ -158,5 +172,6 @@ function midi_to_note(noteNum){
     }
    return n;
 }
+
 
 export default MusicPage;
