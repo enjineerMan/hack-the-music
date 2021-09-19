@@ -149,6 +149,13 @@ function midi_to_note(noteNum){
    if (nt[1] == '#'){
      n+='^c';
    }
+   if (octv==3){ //change note appropriately by octave
+      n+=",";
+    }else if(octv==5){
+      n += n.toLowerCase();
+    }else if(octv==6){
+     n+=n.toLowerCase()+"\'";
+    }
    return n;
 }
 
