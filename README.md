@@ -1,4 +1,4 @@
-![Hack the Music React App](/HTM_Image.png){:height="24px" width="48px"}
+![Hack the Music React App](/HTM_Image.png)
 Video demo: https://youtu.be/FCm5O_XcEq0
 
 ### Inspiration
