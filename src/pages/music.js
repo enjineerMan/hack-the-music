@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import {getMidi} from '../api';
 import {getMidiTempo} from '../api';
+import firebase from 'firebase/compat/app';
+import { getAuth } from 'firebase/auth';
+import withFirebaseAuth from '../App.js';
+
+const auth = getAuth();
+const user = auth.currentUser;
 
 class MusicPage extends Component {
     state = {
@@ -23,9 +29,15 @@ class MusicPage extends Component {
 
     render() {
       const { melody,tempo } = this.state;
-        //console.log(midi_notes);
+      const firebaseApp = firebase.apps[0];
+        console.log(user);
+            
         return (
           <div>
+            { user
+                ? <span>Hello, {user.displayName} </span>
+                : <span>Hello, User</span>
+            }
             <span>Upload Music File</span>
             <div className="panel-row">
               <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />

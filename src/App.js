@@ -1,27 +1,48 @@
 import './App.css';
+import { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import MusicPage from './pages/music.js';
+import withFirebaseAuth from 'react-with-firebase-auth'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import firebaseConfig from './firebaseConfig';
 
-// some code that uses the library
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
-        <MusicPage></MusicPage>
-      </header>
-    </div>
-  );
+const app = firebase.initializeApp(firebaseConfig);
+
+const firebaseAppAuth = app.auth();
+
+const providers = {
+  googleProvider: new firebase.auth.GoogleAuthProvider(),
+};
+
+class App extends Component {
+  render() {
+    const {
+      user,
+      signOut,
+      signInWithGoogle,
+    } = this.props;
+
+      return (
+        <div className="App">
+          <header className="App-header">
+            {
+            user 
+              ? <MusicPage></MusicPage>
+              : <p>Please sign in.</p>
+          }
+          {
+            user
+              ? <button onClick={signOut}>Sign out</button> 
+              : <button onClick={signInWithGoogle}>Sign in with Google</button>
+          }
+          </header>
+        </div>
+      );
+    }
 }
 
-export default App;
+export default withFirebaseAuth({
+  providers,
+  firebaseAppAuth,
+})(App);
