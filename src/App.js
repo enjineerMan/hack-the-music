@@ -26,10 +26,7 @@ class App extends Component {
       return (
         <div className="App">
           <header className="App-header">
-            { user 
-              ? <MusicPage />
-              : <p>Please sign in.</p>
-          }
+          <MusicPage />
           { user
             ? <button onClick={signOut}>Sign out</button> 
             : <button onClick={signInWithGoogle}>Sign in with Google</button>
