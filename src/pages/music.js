@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {getMidi} from '../api';
-import {getMidiTempo} from '../api';
+import { getMidi, getMidiTempo } from '../api';
+import Abcjs from "react-abcjs";
 import firebase from 'firebase/compat/app';
 import { getAuth } from 'firebase/auth';
 import withFirebaseAuth from '../App.js';
@@ -64,6 +64,8 @@ class MusicPage extends Component {
         }
         if (b_count == 4){
           abc_string+="\n";
+          b_count = 0;
+          count = 0;
         }
         var note_duration = melody[i]["duration"];
         var note_value = midi_to_note(Math.round(melody[i]["midi_pitch"])); //note name + octave
@@ -122,6 +124,14 @@ class MusicPage extends Component {
         <button className="button" onClick={() => this.getMidi()}> Upload </button>
         {melody && <p> Key: {melody.key}, Tuning Frequency: {melody.tuning_frequency}</p>}
         {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
+        {this.state.notes && 
+          <Abcjs
+            abcNotation={this.state.notes}
+            parserParams={{}}
+            engraverParams={{ responsive: 'resize' }}
+            renderParams={{ viewportHorizontal: true }}
+          />
+        }
       </div>
     );
   }
