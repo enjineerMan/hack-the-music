@@ -129,14 +129,14 @@ class MusicPage extends Component {
         { user
           ? <span>Hello, {user.displayName} </span>
           : <span>Hello, Guest</span>
-        }
+        } <br/>
         <span>Upload Music File</span>
         <div className="panel-row">
           <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />
         </div>
         <button className="button" onClick={() => this.getMidi()}> Upload </button>
-        {melody && <p> Key: {melody.key}, Tuning Frequency: {melody.tuning_frequency}</p>}
-        {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
+        {melody && <p> Key: {melody.key}, Tuning Frequency: {parseInt(melody.tuning_frequency)}</p>}
+        {tempo && <p> Overall Tempo: {parseInt(tempo.overall_tempo)} </p>}
         {this.state.notes && 
           <Abcjs
             abcNotation={this.state.notes}
