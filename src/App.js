@@ -9,7 +9,6 @@ import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import firebaseConfig from './firebaseConfig';
 
 const app = firebase.initializeApp(firebaseConfig);
-const dp = getFirestore(app);
 
 const firebaseAppAuth = app.auth();
 
@@ -28,10 +27,7 @@ class App extends Component {
       return (
         <div className="App">
           <header className="App-header">
-            { user 
-              ? <MusicPage />
-              : <p>Please sign in.</p>
-          }
+          <MusicPage />
           { user
             ? <button onClick={signOut}>Sign out</button> 
             : <button onClick={signInWithGoogle}>Sign in with Google</button>
