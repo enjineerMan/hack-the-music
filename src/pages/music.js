@@ -67,7 +67,6 @@ class MusicPage extends Component {
           var note_value = midi_to_note(Math.round(melody[i]["midi_pitch"])); //note name + octave
           var note_type;
 
-          var rest_type = 1 - note_type;
           var octv = note_value[note_value.length-1];
           var note_to_add = key_sig.length==6?note_value.substring(0,1) : note_value.substring(0,2);
           if (octv==3){ //change note appropriately by octave
@@ -87,7 +86,7 @@ class MusicPage extends Component {
             note_type = 0.75;
             note_to_add += "1.5";
           }else if(Math.abs(note_duration/beat_duration - 0.5) < Math.abs(note_duration/beat_duration - 0.25)){ //eigth
-            note_type = 0.5;;
+            note_type = 0.5;
           }else if(Math.abs(note_duration/beat_duration - 0.25) < Math.abs(note_duration/beat_duration)){ //sixteenth
             note_type = 0.25;
             note_to_add += "/2";
@@ -98,7 +97,8 @@ class MusicPage extends Component {
           abc_string +=  note_to_add; // need to add "|\" at the end of every measure. Also need to implement rests
           notes.push({"note": note_value, "note_type": note_type});
         }
-        console.log(notes);
+        //console.log(notes);
+        console.log(abc_string);
         //console.log(midi_notes);
         //console.log(tempo["overall_tempo"]);
         
