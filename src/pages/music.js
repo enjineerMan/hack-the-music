@@ -90,7 +90,8 @@ class MusicPage extends Component {
       var count = 0;
       var b_count = 0;
       for(var i = 0; i<melody.length; i++){
-        if (count == 8){
+        console.log("count: "+count);
+        if (count >= 8){
           count = 0;
           abc_string+="|";
           b_count +=1;
@@ -182,6 +183,13 @@ function midi_to_note(noteNum){
    if (nt[1] == '#'){
      n+='^c';
    }
+   if (octv==3){ //change note appropriately by octave
+      n+=",";
+    }else if(octv==5){
+      n += n.toLowerCase();
+    }else if(octv==6){
+     n+=n.toLowerCase()+"\'";
+    }
    return n;
 }
 
