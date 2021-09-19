@@ -63,7 +63,7 @@ class MusicPage extends Component {
       }else if(key_sig==7){
         key_sig = key_sig.substring(0,2).toUpperCase()+key_sig.substring(4);
       }
-      var abc_string = `X: 1\nT: your sheet\nM: ${time_sig}\nK: ${key_sig}\n|`;
+      var abc_string = `X: 1\nT: Your Sheet\nM: ${time_sig}\nK: ${key_sig}\n|`;
       var count = 0;
       var b_count = 0;
       for(var i = 0; i<melody.length; i++){
