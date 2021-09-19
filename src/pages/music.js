@@ -4,13 +4,14 @@ import {getMidiTempo} from '../api';
 import firebase from 'firebase/compat/app';
 import { getAuth } from 'firebase/auth';
 import withFirebaseAuth from '../App.js';
+import { getDatabase, ref, set } from "firebase/database";
 
 class MusicPage extends Component {
   state = {
     file: null,
     melody: '',
     tempo: '',
-    user: '',
+    user: ''
   }
 
   componentDidMount() {
@@ -18,6 +19,16 @@ class MusicPage extends Component {
     const user = auth.currentUser;
     this.setState({ user });
   }
+
+  
+    async writeData(uid, displayName, abcString)
+    {
+        const db = getDatabase();
+        set(ref(db, 'users/' + uid), {
+        username: displayName,
+        abcString: abcString
+      });
+    }
 
   async getMidi() {
     console.log("processing...");
@@ -35,6 +46,7 @@ class MusicPage extends Component {
   render() {
     const { melody,tempo, user } = this.state;
     const firebaseApp = firebase.apps[0];
+    const db = getDatabase();
     console.log(user);
     return (
       <div>
@@ -46,7 +58,7 @@ class MusicPage extends Component {
         <div className="panel-row">
           <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />
         </div>
-        <button className="button" onClick={() => this.getMidi()}> Upload </button>
+        <button className="button" onClick={() => clickFunction()}> Upload </button>
         {melody && <p> Key: {melody.key}, Tuning Frequency: {melody.tuning_frequency}</p>}
         {tempo && <p> Clicks per bar: {tempo.clicks_per_bar}, Overall Tempo: {tempo.overall_tempo} </p>}
       </div>
@@ -56,6 +68,7 @@ class MusicPage extends Component {
   componentDidUpdate(){
     const melody = this.state.melody["notes"];
     const tempo = this.state.tempo;
+    const user = this.state.user;
     var notes = []; // note objects in form {note name + octave: value, note type: value, rest type: value}
     //console.log(melody);
     if(melody){
@@ -99,12 +112,12 @@ class MusicPage extends Component {
       //console.log(midi_notes);
       //console.log(tempo["overall_tempo"]);
       
-
     }
     
   }
 
 }
+
 function midi_to_note(noteNum){
   var notes = "C C#D D#E F F#G G#A A#B ";
    var octv;
@@ -113,5 +126,6 @@ function midi_to_note(noteNum){
    nt = notes.substring((noteNum % 12) * 2, (noteNum % 12) * 2 + 2);
    return nt.toString()+octv.toString();
 }
+
 
 export default MusicPage;
