@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { getMidi, getMidiTempo } from '../api';
+import Button from '../components/Button';
 import Abcjs from "react-abcjs";
 import firebase from 'firebase/compat/app';
 import { getAuth } from 'firebase/auth';
 import withFirebaseAuth from '../App.js';
 import { getDatabase, ref, set } from "firebase/database";
+import './music.css'
 
 class MusicPage extends Component {
   state = {
@@ -38,8 +40,6 @@ class MusicPage extends Component {
     formData.append('format', 'json');
     const response = await getMidi(formData);
     const tempo = await getMidiTempo(formData);
-    console.log(response);
-    console.log(tempo);
     this.setState({ melody: response.melody_result, tempo: tempo.auftakt_result });
     this.abcNotation();
     if (this.state.user != null)
@@ -51,7 +51,6 @@ class MusicPage extends Component {
     const tempo = this.state.tempo;
     const user = this.state.user;
     var notes = []; // note objects in form {note name + octave: value, note type: value, rest type: value}
-    //console.log(melody);
     if(melody){
       const beat_duration = (1/tempo["overall_tempo"])*60;
       var time_sig = tempo["clicks_per_bar"]
@@ -65,12 +64,9 @@ class MusicPage extends Component {
         key_sig = key_sig.substring(0,2).toUpperCase()+key_sig.substring(4);
       }
       var abc_string = `X: 1\nT: your sheet\nM: ${time_sig}\nK: ${key_sig}\n|`;
-      //console.log(key_sig);
-      console.log(key_sig);
       var count = 0;
       var b_count = 0;
       for(var i = 0; i<melody.length; i++){
-        console.log("count: "+count);
         if (count >= 8){
           count = 0;
           abc_string+="|";
@@ -115,25 +111,20 @@ class MusicPage extends Component {
         notes.push({"note": note_value, "note_type": note_type});
       }
       console.log(abc_string);
-      console.log(notes);
       this.setState({ notes: abc_string });
     }
   }
 
   render() {
-    const { melody,tempo, user } = this.state;
-    const firebaseApp = firebase.apps[0];
-    console.log(user);
+    const { melody,tempo, user, file } = this.state;
     return (
-      <div>
+      <div className="MusicPage">
         { user
-          ? <span>Hello, {user.displayName} </span>
-          : <span>Hello, Guest</span>
+          ? <div className="name">Hello, {user.displayName} </div>
+          : <div>Hello, Guest</div>
         } <br/>
-        <span>Upload Music File</span>
-        <div className="panel-row">
-          <input type="file" className="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} />
-        </div>
+        <label class="file"> <input type="file" accept=".mp3" multiple={false} onChange={(event) => this.setState({ file: event.target.files[0] })} /> Choose a track... </label>
+        {file && <span className="mp3">{file.name}</span>}
         <button className="button" onClick={() => this.getMidi()}> Upload </button>
         {melody && <p> Key: {melody.key}, Tuning Frequency: {parseInt(melody.tuning_frequency)}</p>}
         {tempo && <p> Overall Tempo: {parseInt(tempo.overall_tempo)} </p>}
@@ -148,7 +139,6 @@ class MusicPage extends Component {
       </div>
     );
   }
-
 }
 
 function midi_to_note(noteNum){

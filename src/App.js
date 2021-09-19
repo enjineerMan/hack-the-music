@@ -27,6 +27,7 @@ class App extends Component {
       return (
         <div className="App">
           <header className="App-header">
+            <h1> Hack the Music </h1>
          { user
             ? <MusicPage/>
             : <p>Please sign in</p>
